@@ -1,0 +1,9 @@
+{
+  "domain": "sensorthings",
+  "name": "SensorThings API",
+  "version": "0.4",
+  "documentation": "https://developers.home-assistant.io",
+  "requirements": ["aiohttp"],
+  "codeowners": ["@yourgithub"],
+  "config_flow": true
+}
