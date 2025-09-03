@@ -1,2 +1,2 @@
-# HA_STAPI
-SensorThings API for Home Assistant
+# SensorThings API for Home Assistant
+
