@@ -2,6 +2,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.helpers import aiohttp_client
 import aiohttp
+from urllib.parse import urlparse
 from .const import DOMAIN, CONF_URL
 
 class SensorThingsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -14,7 +15,14 @@ class SensorThingsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 async with session.get(f"{url}/Datastreams?$top=1") as resp:
                     if resp.status == 200:
-                        return self.async_create_entry(title="SensorThings API", data=user_input)
+                        # Option 1: Use the full URI as title
+                        # title = url
+                        
+                        # Option 2: Extract hostname for a cleaner title
+                        parsed_url = urlparse(url)
+                        title = f"SensorThings ({parsed_url.hostname})"
+                        
+                        return self.async_create_entry(title=title, data=user_input)
                     else:
                         errors["base"] = "cannot_connect"
             except aiohttp.ClientError:
