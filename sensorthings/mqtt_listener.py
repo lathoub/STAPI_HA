@@ -118,7 +118,10 @@ class SensorThingsMQTTListener:
                             callback = self.subscribers[datastream_id]
                             # Schedule the callback in the event loop
                             _LOGGER.debug(f"Notify subscriber for datastream {datastream_id}")
-                            asyncio.create_task(self._notify_subscriber(callback, result, phenomenon_time))
+                            asyncio.run_coroutine_threadsafe(
+                                self._notify_subscriber(callback, result, phenomenon_time),
+                                self.hass.loop
+                            )
                         else:
                             _LOGGER.debug(f"No subscriber found for datastream {datastream_id}")
                     
