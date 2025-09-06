@@ -5,6 +5,9 @@
 - Multiple connections to SensorThings API services
 - Values are updated through push-messages using the FROST built-in MQTT broker 
 
+<img width="1010" height="833" alt="Screenshot 2025-09-06 at 21 48 47" src="https://github.com/user-attachments/assets/17a7d7db-be1b-4894-b6dd-e80856f0aeda" />
+
+
 ## Installation
 
 - Copy the `sensorthings` folder to the homeassistant `custom_components` folder (which sits in the `config` folder)
