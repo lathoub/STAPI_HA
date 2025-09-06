@@ -5,5 +5,7 @@
   "documentation": "https://developers.home-assistant.io",
   "requirements": ["aiohttp>=3.8.0", "paho-mqtt>=1.6.0"],
   "codeowners": ["@lathoub"],
-  "config_flow": true
+  "config_flow": true,
+  "iot_class": "local_polling",
+  "integration_type": "hub"
 }

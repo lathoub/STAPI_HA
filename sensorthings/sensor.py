@@ -5,6 +5,7 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.core import callback
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.translation import async_get_translations
 from .const import DOMAIN, CONF_URL
 from .mqtt_listener import SensorThingsMQTTListener
 

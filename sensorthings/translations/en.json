@@ -1,0 +1,30 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "OGC SensorThings API",
+        "description": "Configure your OGC SensorThings API integration",
+        "data": {
+          "url": "SensorThings API URL"
+        }
+      },
+      "manual": {
+        "title": "Manual Configuration",
+        "description": "Enter the URL of your SensorThings API server",
+        "data": {
+          "url": "SensorThings API URL"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to SensorThings API server"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_level": {
+        "name": "Battery Level"
+      }
+    }
+  }
+}
