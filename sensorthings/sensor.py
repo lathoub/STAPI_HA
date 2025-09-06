@@ -6,7 +6,10 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.core import callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.translation import async_get_translations
-from .const import DOMAIN, CONF_URL
+from .const import (
+    DOMAIN, CONF_URL, CONF_SCAN_INTERVAL, CONF_MQTT_ENABLED, CONF_MQTT_PORT,
+    DEFAULT_SCAN_INTERVAL, DEFAULT_MQTT_ENABLED, DEFAULT_MQTT_PORT
+)
 from .mqtt_listener import SensorThingsMQTTListener
 
 _LOGGER = logging.getLogger(__name__)
@@ -28,9 +31,16 @@ async def async_setup_entry(hass, entry, async_add_entities):
     url = entry.data[CONF_URL]
     session = aiohttp.ClientSession()
     
-    # Initialize MQTT listener for built-in FROST MQTT broker
-    mqtt_listener = SensorThingsMQTTListener(hass, url)
-    await mqtt_listener.start()
+    # Get configuration options
+    scan_interval = entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+    mqtt_enabled = entry.options.get(CONF_MQTT_ENABLED, DEFAULT_MQTT_ENABLED)
+    mqtt_port = entry.options.get(CONF_MQTT_PORT, DEFAULT_MQTT_PORT)
+    
+    # Initialize MQTT listener if enabled
+    mqtt_listener = None
+    if mqtt_enabled:
+        mqtt_listener = SensorThingsMQTTListener(hass, url, mqtt_port)
+        await mqtt_listener.start()
     
     async def async_fetch_data():
         try:
@@ -42,7 +52,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
         except Exception as err:
             raise UpdateFailed(f"Error fetching data: {err}") from err
     
-    coordinator = DataUpdateCoordinator(hass, _LOGGER, name="SensorThings", update_method=async_fetch_data, update_interval=SCAN_INTERVAL)
+    # Use configured scan interval
+    update_interval = timedelta(seconds=scan_interval)
+    coordinator = DataUpdateCoordinator(hass, _LOGGER, name="SensorThings", update_method=async_fetch_data, update_interval=update_interval)
     await coordinator.async_config_entry_first_refresh()
     
     sensors = []
@@ -60,10 +72,13 @@ async def async_setup_entry(hass, entry, async_add_entities):
     
     async_add_entities(sensors + diagnostic_sensors, True)
     
-    # Store MQTT listener in hass data for cleanup
+    # Store coordinator and MQTT listener in hass data for services and cleanup
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
-    hass.data[DOMAIN][entry.entry_id] = {"mqtt_listener": mqtt_listener}
+    hass.data[DOMAIN][entry.entry_id] = {
+        "mqtt_listener": mqtt_listener,
+        "coordinator": coordinator
+    }
 
 async def async_unload_entry(hass, entry):
     """Unload the integration and cleanup MQTT listener."""

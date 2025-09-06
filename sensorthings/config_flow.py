@@ -3,7 +3,10 @@ from homeassistant import config_entries
 from homeassistant.helpers import aiohttp_client
 import aiohttp
 from urllib.parse import urlparse
-from .const import DOMAIN, CONF_URL
+from .const import (
+    DOMAIN, CONF_URL, CONF_SCAN_INTERVAL, CONF_MQTT_ENABLED, CONF_MQTT_PORT,
+    DEFAULT_SCAN_INTERVAL, DEFAULT_MQTT_ENABLED, DEFAULT_MQTT_PORT
+)
 
 class SensorThingsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
@@ -57,3 +60,34 @@ class SensorThingsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data_schema=vol.Schema({vol.Required(CONF_URL): str}),
                 errors={"base": "cannot_connect"}
             )
+
+
+class SensorThingsOptionsFlow(config_entries.OptionsFlow):
+    """Handle options flow for SensorThings."""
+
+    def __init__(self, config_entry):
+        """Initialize options flow."""
+        self.config_entry = config_entry
+
+    async def async_step_init(self, user_input=None):
+        """Manage the options."""
+        if user_input is not None:
+            return self.async_create_entry(title="", data=user_input)
+
+        return self.async_show_form(
+            step_id="init",
+            data_schema=vol.Schema({
+                vol.Optional(
+                    CONF_SCAN_INTERVAL,
+                    default=self.config_entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+                ): vol.All(vol.Coerce(int), vol.Range(min=10, max=3600)),
+                vol.Optional(
+                    CONF_MQTT_ENABLED,
+                    default=self.config_entry.options.get(CONF_MQTT_ENABLED, DEFAULT_MQTT_ENABLED)
+                ): bool,
+                vol.Optional(
+                    CONF_MQTT_PORT,
+                    default=self.config_entry.options.get(CONF_MQTT_PORT, DEFAULT_MQTT_PORT)
+                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=65535)),
+            }),
+        )

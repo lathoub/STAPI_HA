@@ -14,10 +14,41 @@
         "data": {
           "url": "SensorThings API URL"
         }
+      },
+      "init": {
+        "title": "Configuration Options",
+        "description": "Configure advanced options for your SensorThings integration",
+        "data": {
+          "scan_interval": "Scan interval (seconds)",
+          "mqtt_enabled": "Enable MQTT real-time updates",
+          "mqtt_port": "MQTT port"
+        }
       }
     },
     "error": {
       "cannot_connect": "Unable to connect to SensorThings API server"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "battery_level": {
+        "name": "Battery Level"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Connected"
+      }
+    }
+  },
+  "services": {
+    "refresh_all": {
+      "name": "Refresh All Sensors",
+      "description": "Manually refresh all SensorThings sensors"
+    },
+    "reconnect_mqtt": {
+      "name": "Reconnect MQTT",
+      "description": "Reconnect to the MQTT broker"
     }
   }
 }

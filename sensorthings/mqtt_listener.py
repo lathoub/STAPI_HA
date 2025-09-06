@@ -12,7 +12,7 @@ _LOGGER = logging.getLogger(__name__)
 class SensorThingsMQTTListener:
     """MQTT listener for SensorThings sensor updates using built-in FROST MQTT broker."""
     
-    def __init__(self, hass: HomeAssistant, sensorthings_url: str):
+    def __init__(self, hass: HomeAssistant, sensorthings_url: str, mqtt_port: int = 1883):
         self.hass = hass
         self.sensorthings_url = sensorthings_url
         self.client: Optional[mqtt.Client] = None
@@ -22,7 +22,7 @@ class SensorThingsMQTTListener:
         # Extract hostname from SensorThings URL for MQTT broker
         parsed_url = urlparse(sensorthings_url)
         self.mqtt_host = parsed_url.hostname
-        self.mqtt_port = 1883  # Default MQTT port
+        self.mqtt_port = mqtt_port
         
     async def start(self):
         """Start the MQTT listener."""
