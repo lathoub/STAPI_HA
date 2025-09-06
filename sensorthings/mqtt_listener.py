@@ -73,7 +73,7 @@ class SensorThingsMQTTListener:
             
             # Subscribe to FROST observation topics
             # FROST typically uses topics like: v1.1/Observations(123)
-            topic_pattern = f"{STAPI_VERSION}/Observations/+"
+            topic_pattern = f"{STAPI_VERSION}/Observations?$expand=Datastream($select=id)"
             client.subscribe(topic_pattern)
             _LOGGER.info(f"Subscribed to FROST observation topics: {topic_pattern}")
         else:
@@ -95,32 +95,38 @@ class SensorThingsMQTTListener:
             
             _LOGGER.debug(f"Received MQTT message on topic {topic}: {payload}")
             
+            observation_data = json.loads(payload)
+            observation_id = observation_data.get("@iot.id")
+
             # Parse FROST observation topic: v1.1/Observations(123)
-            expected_prefix = f"{STAPI_VERSION}/Observations("
-            if topic.startswith(expected_prefix) and topic.endswith(")"):
-                observation_id = topic[len(expected_prefix):-1]  # Extract ID from v1.1/Observations(123)
+            if observation_id is not None:
                 
                 try:
                     # Parse the observation data
-                    observation_data = json.loads(payload)
+                    datastream_data = observation_data.get("Datastream")
                     
                     # Extract relevant information
-                    datastream_id = observation_data.get("Datastream", {}).get("@iot.id")
+                    datastream_id = datastream_data.get("@iot.id")
                     result = observation_data.get("result")
                     phenomenon_time = observation_data.get("phenomenonTime")
-                    
+
+                    _LOGGER.debug(f"Received data, ObsId:{observation_id} DataStreamId: {datastream_id} Result: {result}")
+
                     if datastream_id and result is not None:
                         # Notify subscribers
                         if datastream_id in self.subscribers:
                             callback = self.subscribers[datastream_id]
                             # Schedule the callback in the event loop
+                            _LOGGER.debug(f"Notify subscriber for datastream {datastream_id}")
                             asyncio.create_task(self._notify_subscriber(callback, result, phenomenon_time))
                         else:
                             _LOGGER.debug(f"No subscriber found for datastream {datastream_id}")
                     
                 except (json.JSONDecodeError, KeyError) as e:
                     _LOGGER.debug(f"Could not parse observation data: {e}")
-            
+            else:
+                _LOGGER.warning(f"Could not retrieve observation_id from payload")
+                
         except Exception as e:
             _LOGGER.error(f"Error processing MQTT message: {e}")
     
