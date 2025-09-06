@@ -183,9 +183,14 @@ class SensorThingsBatteryLevel(SensorEntity):
                 return ds
         return None
     
+    
     @property
-    def name(self):
-        return f"{self._thing.get('name')} Battery Level"
+    def translation_key(self):
+        return "battery_level"
+    
+    @property
+    def has_entity_name(self):
+        return True
     
     @property
     def unique_id(self):

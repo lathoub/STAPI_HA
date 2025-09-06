@@ -19,12 +19,5 @@
     "error": {
       "cannot_connect": "Unable to connect to SensorThings API server"
     }
-  },
-  "entity": {
-    "sensor": {
-      "battery_level": {
-        "name": "Battery Level"
-      }
-    }
   }
 }
