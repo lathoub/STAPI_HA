@@ -175,20 +175,7 @@ class SensorThingsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
-        if user_input is None:
-            # Show discovery options
-            return self.async_show_menu(
-                step_id="user",
-                menu_options={
-                    "discover": "Discover devices on network",
-                    "manual": "Enter URL manually"
-                }
-            )
-        
-        if user_input == "discover":
-            return await self.async_step_discover()
-        elif user_input == "manual":
-            return await self.async_step_manual()
+        return await self.async_step_manual(user_input)
     
     async def async_step_discover(self, user_input=None):
         """Handle discovery step."""
@@ -310,8 +297,7 @@ class SensorThingsConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return await self._validate_and_create_entry(url)
         
         schema = vol.Schema({
-            vol.Required(CONF_URL): str,
-            vol.Optional("discover_again"): bool
+            vol.Required(CONF_URL): str
         })
         
         return self.async_show_form(
