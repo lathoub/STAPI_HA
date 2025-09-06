@@ -2,8 +2,9 @@
 
 ## Installation
 
-- Copy the `sensorthings` folder to the homeassistant `custom_components` folder (which sits in the `config` folder)
-- Restart Home Assistant
+Copy the `sensorthings` folder to the homeassistant `custom_components` folder (which sits in the `config` folder)
+
+Restart Home Assistant
 
 ## Usage
 
