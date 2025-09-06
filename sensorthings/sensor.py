@@ -67,6 +67,7 @@ class SensorThingsDatastream(SensorEntity):
             "name": thing.get("name", f"Thing {thing.get('@iot.id')}"),
             "model": thing.get("properties", {}).get("model", "SensorThings Thing"),
             "manufacturer": thing.get("properties", {}).get("manufacturer", "Unknown"),
+            "sw_version": thing.get("properties", {}).get("firmware_version", "1.3.2"),
         }
         
         # Subscribe to MQTT updates if available
