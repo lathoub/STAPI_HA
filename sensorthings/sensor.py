@@ -104,8 +104,11 @@ class SensorThingsDatastream(SensorEntity):
             "name": thing.get("name", f"Thing {thing.get('@iot.id')}"),
             "model": thing.get("properties", {}).get("model", "SensorThings Thing"),
             "manufacturer": thing.get("properties", {}).get("manufacturer", "Unknown"),
-            "sw_version": thing.get("properties", {}).get("firmware_version", "1.3.2"),
         }
+        # Only add firmware version if it exists
+        firmware_version = thing.get("properties", {}).get("firmware_version")
+        if firmware_version:
+            self._device_info["sw_version"] = firmware_version
         if sensorthings_url:
             self._device_info["configuration_url"] = sensorthings_url
         
@@ -180,8 +183,11 @@ class SensorThingsBatteryLevel(SensorEntity):
             "name": thing.get("name", f"Thing {thing.get('@iot.id')}"),
             "model": thing.get("properties", {}).get("model", "SensorThings Thing"),
             "manufacturer": thing.get("properties", {}).get("manufacturer", "Unknown"),
-            "sw_version": thing.get("properties", {}).get("firmware_version", "1.3.2"),
         }
+        # Only add firmware version if it exists
+        firmware_version = thing.get("properties", {}).get("firmware_version")
+        if firmware_version:
+            self._device_info["sw_version"] = firmware_version
         if sensorthings_url:
             self._device_info["configuration_url"] = sensorthings_url
         
