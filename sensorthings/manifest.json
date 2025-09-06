@@ -1,6 +1,6 @@
 {
   "domain": "sensorthings",
-  "name": "SensorThings API",
+  "name": "OGC SensorThings API",
   "version": "0.4",
   "documentation": "https://developers.home-assistant.io",
   "requirements": ["aiohttp>=3.8.0", "paho-mqtt>=1.6.0"],
