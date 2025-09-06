@@ -1,5 +1,10 @@
 # SensorThings API for Home Assistant
 
+## Features
+
+- Multiple connections to SensorThings API services
+- Values are updated through push-messages using the FROST built-in MQTT broker 
+
 ## Installation
 
 - Copy the `sensorthings` folder to the homeassistant `custom_components` folder (which sits in the `config` folder)
