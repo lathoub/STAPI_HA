@@ -1,6 +1,7 @@
 # SensorThings API for Home Assistant
 
 [![ha_gold_badge](https://img.shields.io/badge/Home%20Assistant-Gold%20Tier-yellow.svg)](https://developers.home-assistant.io/docs/core/integration-quality-scale/)
+[![ogc_sensorthings](https://img.shields.io/badge/OGC-SensorThings%20API-blue.svg)](https://www.ogc.org/standards/sensorthings)
 [![license](https://img.shields.io/badge/license-GPL3-green.svg)](LICENSE)
 
 <img width="1920" height="1080" alt="Untitled 001" src="https://github.com/user-attachments/assets/48128762-ee51-4de0-b8ca-908dab7c1cfa" />
