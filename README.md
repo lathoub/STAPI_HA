@@ -15,7 +15,7 @@ Use the Home Assistant GUI to add a new integration (settings → devices & serv
 
 Configuration only requires the base URL of the OGC SensorThings endpoint (including its version). e.g. https://ogc-demo.k8s.ilt-dmz.iosb.fraunhofer.de/v1.1 or https://sensors.bgs.ac.uk/FROST-Server/v1.1.
 
-This integration uses MQTT to update the values in Home Assistant
+This integration uses MQTT to update the sensor values in Home Assistant.
 
 ## OGC Compliance
 
