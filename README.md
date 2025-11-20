@@ -10,8 +10,6 @@
 
 Copy the `sensorthings` folder to the homeassistant `custom_components` folder (which sits in the `config` folder)
 
-If no `config` folder is visible in the root of homeassistant, create a `custom_components` folder and copy the `sensorthings` folder here.
-
 Restart Home Assistant
 
 ## Usage
